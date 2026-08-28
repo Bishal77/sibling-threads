@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ThreeOfUsRouteImport } from './routes/three-of-us'
+import { Route as ForSlugRouteImport } from './routes/for.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +23,40 @@ const ThreeOfUsRoute = ThreeOfUsRouteImport.update({
   path: '/three-of-us',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ForSlugRoute = ForSlugRouteImport.update({
+  id: '/for/$slug',
+  path: '/for/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/three-of-us': typeof ThreeOfUsRoute
+  '/for/$slug': typeof ForSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/three-of-us': typeof ThreeOfUsRoute
+  '/for/$slug': typeof ForSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/three-of-us': typeof ThreeOfUsRoute
+  '/for/$slug': typeof ForSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/three-of-us'
+  fullPaths: '/' | '/three-of-us' | '/for/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/three-of-us'
-  id: '__root__' | '/' | '/three-of-us'
+  to: '/' | '/three-of-us' | '/for/$slug'
+  id: '__root__' | '/' | '/three-of-us' | '/for/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ThreeOfUsRoute: typeof ThreeOfUsRoute
+  ForSlugRoute: typeof ForSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +75,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ThreeOfUsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/for/$slug': {
+      id: '/for/$slug'
+      path: '/for/$slug'
+      fullPath: '/for/$slug'
+      preLoaderRoute: typeof ForSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ThreeOfUsRoute: ThreeOfUsRoute,
+  ForSlugRoute: ForSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
